@@ -4,26 +4,36 @@ class NNClassifier:
     def __init__(self):
         pass
 
-    def fit(self, X, y, X_val, y_val, hidden_layers=[1], batch_size="full", max_epochs=100, lr=0.1):
+    def fit(self, X, y, X_val, y_val, hidden_layers=[1], batch_size=None, max_epochs=100, lr=0.1):
         """
         Description:
-        TBC
+        Fit the neural network model to the data using gradient descent and backpropagation.
 
         Parameters:
-        TBC
+        X (array): The training data. NxM - N samples, M features.
+        y (array): The training targets. NxK - N samples, K classes.
+        X_val (array): The validation data.
+        y_val (array): The validation targets.
+        hidden_layers (list): List with number of nodes in each layer, starting from the leftmost hidden layer.
+        batch_size (int): Size of batch. Between 1 and N.
+        max_epochs (int): Maximum number of epochs before stoppage.
+        lr (float): The learning rate.
 
         Returns:
-        TBC
+        
         """
         # Initialize properties
         self.n_features = X.shape[1]
         self.n_classes = y.shape[1] # Assume that targets are 1-hot
         self.weights = self.initialize_weights([self.n_features] + hidden_layers + [self.n_classes]) # Array of weight matrices
-        self.batch_size = batch_size 
         self.X_val = X_val
         self.y_val = y_val
         self.n_val_loss_increase = 0
         self.val_loss = 0
+        if batch_size != None:
+            self.batch_size = batch_size
+        else:
+            self.batch_size = X.shape[0]
 
         # Main loop
         self.stopping_condition = False 
@@ -34,8 +44,18 @@ class NNClassifier:
             epoch += 1
 
 
-    def predict(self):
-        pass # To be implemented    
+    def predict(self, X):
+        """
+        Description:
+        Predict output from data.
+
+        Parameters: 
+        X (array): The data.
+
+        Returns:
+        (array): The predicted output.
+        """
+        return np.argmax(self.forward(X), axis=1) 
 
     def initialize_weigths(self, layers):
         """
