@@ -24,7 +24,7 @@ class NNClassifier:
         """
         # Initialize properties
         self.n_features = X.shape[1]
-        self.n_classes = y.shape[1] # Assume that targets are 1-hot
+        self.n_classes = y.shape[1] 
         self.weights = self.initialize_weights([self.n_features] + hidden_layers + [self.n_classes]) # Array of weight matrices
         self.X_val = X_val
         self.y_val = y_val
